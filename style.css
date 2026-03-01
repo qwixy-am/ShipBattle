@@ -1,0 +1,202 @@
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
+
+/* ЗМІННІ ДЛЯ СВІТЛОЇ/ТЕМНОЇ ТЕМИ */
+:root {
+    --ink-color: #000080;
+    --red-ink: #cc0000;
+    --grid-bg: #f8fbff;
+    --grid-line: #cde0f5;
+    --hover-green: rgba(144, 238, 144, 0.7);
+    --hover-red: rgba(255, 182, 193, 0.7);
+    --ship-color: #000080;
+    --modal-bg: rgba(100, 120, 150, 0.8);
+}
+
+[data-theme="dark"] {
+    --ink-color: #a6accd;
+    --red-ink: #f07178;
+    --grid-bg: #1a1a2e;
+    --grid-line: #292942;
+    --hover-green: rgba(195, 232, 141, 0.5);
+    --hover-red: rgba(240, 113, 120, 0.5);
+    --ship-color: #82aaff;
+    --modal-bg: rgba(15, 15, 25, 0.9);
+}
+
+* { box-sizing: border-box; font-family: 'Courier Prime', monospace; margin: 0; padding: 0; }
+
+body {
+    background-color: var(--grid-bg);
+    background-image: 
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 20px 20px;
+    color: var(--ink-color);
+    display: flex; justify-content: center; align-items: center;
+    min-height: 100vh; position: relative; overflow-x: hidden;
+    transition: background-color 0.4s, color 0.4s;
+}
+
+.hidden { display: none !important; }
+
+/* Анімації відображення */
+.fade-in { animation: fadeIn 0.4s ease-out; }
+.pop-in { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* Анімації Перемоги / Поразки */
+@keyframes winPulse {
+    0% { transform: scale(1); text-shadow: 0 0 10px rgba(46, 204, 113, 0); }
+    50% { transform: scale(1.15); text-shadow: 0 0 20px rgba(46, 204, 113, 0.8); color: #2ecc71; }
+    100% { transform: scale(1); text-shadow: 0 0 10px rgba(46, 204, 113, 0); }
+}
+@keyframes loseShake {
+    0% { transform: translateX(0); color: var(--red-ink); }
+    25% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+    75% { transform: translateX(-10px); }
+    100% { transform: translateX(0); color: var(--red-ink); }
+}
+.win-anim { animation: winPulse 1.5s infinite ease-in-out; }
+.lose-anim { animation: loseShake 0.5s ease; }
+
+/* Кнопки та текст */
+.title { text-align: center; font-size: 28px; margin-bottom: 20px; font-weight: bold; }
+.title.small { font-size: 18px; margin-top: 20px; margin-bottom: 10px; }
+.subtitle { text-align: center; font-size: 14px; margin-bottom: 15px; transition: color 0.3s; }
+.red-text { color: var(--red-ink); }
+
+.screen { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 800px; padding: 20px; }
+
+.menu-btn, .menu-input {
+    width: 100%; max-width: 300px; padding: 12px; margin: 8px 0;
+    border: 2px solid var(--ink-color); background: var(--grid-bg);
+    color: var(--ink-color); font-size: 16px; font-weight: bold;
+    text-align: center; cursor: pointer; border-radius: 4px; transition: all 0.2s;
+}
+.menu-btn:hover:not(:disabled) { background: var(--ink-color); color: var(--grid-bg); transform: scale(1.02); }
+.menu-btn:active:not(:disabled) { transform: scale(0.98); }
+.menu-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.menu-input { outline: none; }
+.menu-input::placeholder { color: var(--ink-color); opacity: 0.5; }
+
+.divider { width: 100%; max-width: 400px; text-align: center; border-bottom: 2px dashed var(--ink-color); line-height: 0.1em; margin: 25px 0; }
+.divider span { background: var(--grid-bg); padding: 0 10px; font-weight: bold; transition: background 0.4s; }
+
+/* Модальні вікна */
+.modal {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--modal-bg);
+    display: flex; justify-content: center; align-items: center; z-index: 100;
+}
+.paper-box {
+    background: var(--grid-bg); border: 2px solid var(--ink-color);
+    border-radius: 8px; padding: 30px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    transition: background 0.4s, border-color 0.4s;
+}
+.paper-box.dashed { border-style: dashed; padding: 15px; }
+.code-box { font-size: 32px; letter-spacing: 5px; border: 2px dashed var(--ink-color); padding: 15px; margin: 20px 0; font-weight: bold; }
+
+.action-btn { background: var(--ink-color); color: var(--grid-bg); border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px; font-weight: bold; transition: 0.2s; }
+.action-btn:hover { opacity: 0.8; transform: translateY(-2px); }
+.action-btn.red { background: var(--grid-bg); color: var(--red-ink); border: 2px solid var(--red-ink); }
+.action-btn.red:hover { background: var(--red-ink); color: var(--grid-bg); }
+.outline-btn { background: transparent; border: 2px solid var(--ink-color); padding: 8px 16px; cursor: pointer; border-radius: 4px; margin-top: 15px; color: var(--ink-color); font-weight: bold; transition: 0.2s;}
+.outline-btn:hover { background: var(--ink-color); color: var(--grid-bg); }
+
+/* --- НАЛАШТУВАННЯ ТА КУТОВІ КНОПКИ --- */
+.settings-group { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; font-size: 18px; font-weight: bold; gap: 20px; }
+.settings-group .outline-btn { margin-top: 0; min-width: 130px; } /* ВАЖЛИВО: Скидаємо margin-top, щоб кнопки були на рівні тексту! */
+
+.corner-btn { 
+    position: absolute; top: 20px; 
+    background: var(--grid-bg); color: var(--ink-color); 
+    border: 2px solid var(--ink-color); 
+    font-size: 24px; 
+    width: 44px; height: 44px; /* Ідеальний квадрат */
+    display: flex; justify-content: center; align-items: center; 
+    cursor: pointer; border-radius: 8px; transition: 0.3s; z-index: 50; 
+    padding: 0; 
+}
+#settings-btn { right: 20px; }
+#settings-btn:hover { transform: rotate(90deg); background: var(--ink-color); color: var(--grid-bg); }
+#back-btn { left: 20px; }
+#back-btn:hover { transform: scale(1.1); background: var(--ink-color); color: var(--grid-bg); }
+
+/* Сітка та кораблі */
+.board-container { border: 2px solid var(--ink-color); padding: 2px; background: var(--grid-bg); display: inline-block; transition: border-color 0.4s; }
+.board { display: grid; grid-template-columns: 30px repeat(10, 30px); grid-template-rows: 30px repeat(10, 30px); gap: 1px; background: var(--ink-color); transition: background 0.4s; }
+
+.cell, .header-cell { 
+    background: var(--grid-bg); 
+    width: 30px; height: 30px; 
+    display: flex; justify-content: center; align-items: center; 
+    font-size: 14px; font-weight: bold; cursor: crosshair; 
+    transition: background 0.1s, color 0.4s; 
+}
+.header-cell { color: var(--ink-color); cursor: default; }
+
+.cell.hover-valid { background: var(--hover-green); }
+.cell.hover-invalid { background: var(--hover-red); }
+.cell.ship { background: var(--ship-color); box-shadow: inset 0 0 5px rgba(0,0,0,0.5); }
+
+/* Бойові відмітки */
+.cell.hit { 
+    background: var(--hover-red) !important; 
+    color: var(--red-ink) !important; 
+    font-size: 18px; 
+    cursor: default; 
+}
+.cell.hit::after { content: '✖'; animation: popIn 0.3s ease; }
+
+.cell.miss { 
+    background: var(--grid-bg) !important; 
+    cursor: default; 
+}
+.cell.miss::after { 
+    content: ''; 
+    display: block;
+    width: 10px;  
+    height: 10px; 
+    background-color: var(--ink-color); 
+    border-radius: 50%; 
+    animation: popIn 0.3s ease; 
+}
+
+.cell.enemy-cell:not(.hit):not(.miss):hover { background: rgba(128, 128, 128, 0.2); }
+
+.fleet-controls { margin-bottom: 20px; width: 100%; }
+.orientation-toggle { margin-bottom: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 10px;}
+
+/* Стрілка зміни напрямку */
+.dir-btn { background: var(--grid-bg); border: 2px solid var(--ink-color); border-radius: 4px; color: var(--ink-color); cursor: pointer; padding: 2px 8px; font-size: 16px; transition: 0.2s; }
+.dir-btn:hover { background: var(--ink-color); color: var(--grid-bg); transform: scale(1.1); }
+
+.ships-selector { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.ship-btn { border: 2px solid var(--ink-color); background: transparent; padding: 5px 10px; cursor: pointer; display: flex; align-items: center; gap: 5px; border-radius: 4px; color: var(--ink-color); transition: 0.2s; }
+.ship-btn.active { background: var(--ink-color); color: var(--grid-bg); font-weight: bold; transform: scale(1.05); }
+.ship-btn.active .block { background: var(--grid-bg); }
+.ship-btn:disabled { opacity: 0.3; cursor: not-allowed; border-color: gray; color: gray; transform: none; }
+.ship-btn:disabled .block { background: gray; }
+.ship-blocks { display: flex; gap: 2px; }
+.block { width: 12px; height: 12px; background: var(--ink-color); transition: background 0.4s; }
+
+.boards-wrapper { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; margin-top: 10px; }
+.board-column { display: flex; flex-direction: column; align-items: center; }
+
+/* СПОВІЩЕННЯ (TOASTS) */
+#notification-container {
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+    z-index: 1000; display: flex; flex-direction: column; gap: 10px; pointer-events: none;
+}
+.toast {
+    background: var(--ink-color); color: var(--grid-bg);
+    padding: 12px 24px; border-radius: 8px; font-weight: bold; font-size: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    animation: slideDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, fadeOut 0.4s ease forwards 3s;
+}
+.toast.error { background: var(--red-ink); color: white; }
+@keyframes slideDown { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes fadeOut { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-20px); opacity: 0; } }

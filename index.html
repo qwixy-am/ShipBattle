@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="uk" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Морський Бій Онлайн</title>
+    <link rel="stylesheet" href="Css/style.css">
+</head>
+<body>
+
+    <div id="notification-container"></div>
+
+    <button id="back-btn" class="corner-btn hidden">⬅️</button>
+    <button id="settings-btn" class="corner-btn">⚙️</button>
+
+    <div id="main-menu" class="screen fade-in">
+        <h1 class="title" data-i18n="title">МОРСЬКИЙ БІЙ</h1>
+        <button id="play-bot-btn" class="menu-btn" data-i18n="playBot">ГРАТИ З БОТОМ</button>
+        
+        <div class="divider">
+            <span data-i18n="onlineMode">⚓ ОНЛАЙН</span>
+        </div>
+        
+        <button id="create-room-btn" class="menu-btn" data-i18n="createRoom">СТВОРИТИ КІМНАТУ</button>
+        <input type="text" id="room-code-input" class="menu-input" placeholder="ВВЕДИ КОД КІМНАТИ" data-i18n-placeholder="enterCode">
+        <button id="join-room-btn" class="menu-btn" data-i18n="join">ПРИЄДНАТИСЬ</button>
+    </div>
+
+    <div id="room-modal" class="modal hidden">
+        <div class="modal-content paper-box pop-in">
+            <h2 data-i18n="roomCreated">КІМНАТА СТВОРЕНА</h2>
+            <div id="generated-code" class="code-box">------</div>
+            <button id="copy-code-btn" class="action-btn">📋 <span data-i18n="copy">Скопіювати</span></button>
+            <p class="waiting-text" data-i18n="waiting">Чекаємо на друга...</p>
+            <button id="cancel-room-btn" class="outline-btn" data-i18n="cancel">Скасувати</button>
+        </div>
+    </div>
+
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content paper-box pop-in">
+            <h2 data-i18n="settingsTitle">НАЛАШТУВАННЯ</h2>
+            <div class="settings-group">
+                <span data-i18n="theme">Тема:</span>
+                <button id="toggle-theme-btn" class="outline-btn small">🌙 Темна</button>
+            </div>
+            <div class="settings-group">
+                <span data-i18n="language">Мова:</span>
+                <button id="toggle-lang-btn" class="outline-btn small">🇺🇸 English</button>
+            </div>
+            <button id="close-settings-btn" class="action-btn" style="margin-top:20px;" data-i18n="close">Закрити</button>
+        </div>
+    </div>
+
+    <div id="placement-screen" class="screen hidden fade-in">
+        <h2 class="title" data-i18n="placementTitle">Розстановка</h2>
+        <p class="subtitle red-text" data-i18n="placementSub">Вибери корабель та тисни на поле</p>
+
+        <div class="fleet-controls paper-box dashed">
+            <div class="orientation-toggle">
+                <span data-i18n="direction">Напрямок:</span> <span id="orientation-text" data-i18n="horizontal">Горизонтально</span> 
+                <button id="toggle-dir-btn" class="dir-btn">➡️</button>
+            </div>
+            <div class="ships-selector">
+                <button class="ship-btn active" data-size="4">
+                    <div class="ship-blocks"><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div></div> 
+                    (<span class="count">1</span>)
+                </button>
+                <button class="ship-btn" data-size="3">
+                    <div class="ship-blocks"><div class="block"></div><div class="block"></div><div class="block"></div></div> 
+                    (<span class="count">2</span>)
+                </button>
+                <button class="ship-btn" data-size="2">
+                    <div class="ship-blocks"><div class="block"></div><div class="block"></div></div> 
+                    (<span class="count">3</span>)
+                </button>
+                <button class="ship-btn" data-size="1">
+                    <div class="ship-blocks"><div class="block"></div></div> 
+                    (<span class="count">4</span>)
+                </button>
+                <button id="reset-board-btn" class="action-btn red"><span data-i18n="reset">Скинути</span> 🗑️</button>
+            </div>
+        </div>
+
+        <h3 class="title small" data-i18n="yourFleet">Твій флот</h3>
+        <div class="board-container">
+            <div id="player-board" class="board"></div>
+        </div>
+        <button id="ready-btn" class="menu-btn hidden" style="margin-top: 20px;" data-i18n="ready">ГОТОВИЙ</button>
+    </div>
+
+    <div id="game-screen" class="screen hidden fade-in">
+        <h2 class="title" data-i18n="battleTitle">БІЙ!</h2>
+        <h3 id="game-status" class="subtitle red-text" style="font-size: 20px; font-weight: bold;">...</h3>
+        
+        <div class="boards-wrapper">
+            <div class="board-column">
+                <h3 class="title small" data-i18n="enemyBoard">Поле супротивника</h3>
+                <div class="board-container">
+                    <div id="enemy-game-board" class="board"></div>
+                </div>
+            </div>
+            
+            <div class="board-column">
+                <h3 class="title small" data-i18n="yourBoard">Твоє поле</h3>
+                <div class="board-container">
+                    <div id="player-game-board" class="board"></div>
+                </div>
+            </div>
+        </div>
+        <button id="restart-game-btn" class="menu-btn hidden" style="margin-top: 20px;" data-i18n="playAgain">ГРАТИ ЗНОВУ</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="Js/script.js"></script>
+</body>
+</html>
